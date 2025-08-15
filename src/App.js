@@ -4,11 +4,13 @@ import { fetchPosts } from "./api/posts";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function App() {
+     // useQuery é um hook principal do Tanstack Query
     const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
-        queryKey: ["users"],
+        queryKey: ["posts"],
         queryFn: fetchPosts,
     });
 
+    // Exibe um activityIndicator enquanto os dados estão sendo carregados
     if (isLoading) {
         return (
             <View style={styles.center}>
@@ -18,6 +20,7 @@ export default function App() {
         );
     }
 
+    // Exibir uma mensagem de erro, se houver falha na requisição
     if (isError) {
         return (
             <View style={styles.center}>
@@ -37,7 +40,7 @@ export default function App() {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
-        refreshing={isFetching}
+        refreshing={isFetching} // Mostra o spiner durante o refetch
         onRefresh={refetch}
         renderItem={({ item }) => (
           <View style={styles.card}>
